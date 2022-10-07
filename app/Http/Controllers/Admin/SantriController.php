@@ -22,12 +22,23 @@ class SantriController extends Controller
 {
     public function index(Request $req)
     {
-
         $perPage = $req->input('perPage') ?: 5;
         return Inertia::render('Santri/Index', [
             'students' => Student::query()
                 ->when($req->input('search'), function ($query, $search) {
                     $query->where('nama', 'like', "%{$search}%");
+                })
+                ->when($req->input('daerah'), function ($query, $daerah) {
+                    $query->where('dormitory_id', $daerah);
+                })
+                ->when($req->input('madin'), function ($query, $madin) {
+                    $query->where('madin_education_id', $madin);
+                })
+                ->when($req->input('formal'), function ($query, $formal) {
+                    $query->where('formal_education_id', $formal);
+                })
+                ->when($req->input('tahun'), function ($query, $tahun) {
+                    $query->whereYear('created_at', '=', $tahun);
                 })
                 ->paginate($perPage)
                 ->withQueryString()
@@ -46,7 +57,7 @@ class SantriController extends Controller
                     ];
                 }),
             'filters' => $req->only(
-                ['search', 'perPage'],
+                ['search', 'perPage', 'daerah', 'madin', 'formal', 'tahun'],
 
             ),
             'perHal' => $perPage,

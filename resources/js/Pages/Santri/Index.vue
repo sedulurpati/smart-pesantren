@@ -3,34 +3,64 @@
         <Alert />
         <SweetAlert />
         <!-- <button @click="alertDisplay()"></button> -->
-        <div class="card p-1 text-capitalize">
-            <div class="row">
-                <div class="col my-1">
-                    <v-select
-                        :options="dormitories"
-                        :reduce="(dormitories) => dormitories.id"
-                        label="name"
-                        placeholder="Daerah"
+        <div class="card text-capitalize">
+            <div class="row p-1 pb-0">
+                <div class="col-md-3 col-sm-6">
+                    <label for="">Daerah</label>
+                    <select
+                        class="form-select"
+                        v-model="fltDaerah"
+                        @change="getDaerah"
+                    >
+                        <option
+                            v-for="item in dormitories"
+                            :value="item.id"
+                            v-html="item.name"
+                        />
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <label for="">Formal</label>
+                    <select
+                        v-model="fltFormal"
+                        class="form-select"
+                        @change="getFormal"
+                    >
+                        <option
+                            v-for="item in formal_educations"
+                            :value="item.id"
+                            v-html="item.name"
+                        />
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <label for="">Madin</label>
+                    <select
+                        v-model="fltMadin"
+                        class="form-select"
+                        @change="getMadin"
+                    >
+                        <option
+                            v-for="item in madin_educations"
+                            :value="item.id"
+                            v-html="item.name"
+                        />
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <label for="">Tahun</label>
+                    <input
+                        type="number"
+                        class="form-control"
+                        placeholder="Tahun"
+                        v-model="fltTahun"
+                        @input="getTahun"
                     />
                 </div>
-                <div class="col my-1">
-                    <v-select
-                        :reduce="(madin) => madin.id"
-                        label="name"
-                        :options="madin_educations"
-                        placeholder="Madin"
-                    />
-                </div>
-                <div class="col my-1">
-                    <v-select
-                        :reduce="(formal) => formal.id"
-                        label="name"
-                        :options="formal_educations"
-                        placeholder="Formal"
-                    />
-                </div>
-                <div class="col my-1">
-                    <v-select :options="['2010']" placeholder="Tahun" />
+                <div class="col-md-1 col-sm-6">
+                    <button class="btn btn-primary mt-2" @click="handleReset">
+                        Reset
+                    </button>
                 </div>
             </div>
         </div>
@@ -214,14 +244,91 @@ const props = defineProps({
 });
 const search = ref(props.filters.search);
 const perPage = ref(props.filters.perPage);
+const fltDaerah = ref(props.filters.daerah);
+const fltMadin = ref(props.filters.madin);
+const fltFormal = ref(props.filters.formal);
+const fltTahun = ref(props.filters.tahun);
 
 let isTyping = ref(false);
+
+const getTahun = () => {
+    Inertia.get(
+        route("admin.santri.index"),
+        {
+            search: search.value,
+            perPage: perPage.value,
+            daerah: fltDaerah.value,
+            madin: fltMadin.value,
+            formal: fltFormal.value,
+            tahun: fltTahun.value,
+        },
+        {
+            preserveState: true,
+            replace: true,
+        }
+    );
+};
+const getDaerah = () => {
+    Inertia.get(
+        route("admin.santri.index"),
+        {
+            search: search.value,
+            perPage: perPage.value,
+            daerah: fltDaerah.value,
+            madin: fltMadin.value,
+            formal: fltFormal.value,
+            tahun: fltTahun.value,
+        },
+        {
+            preserveState: true,
+            replace: true,
+        }
+    );
+};
+const getMadin = () => {
+    Inertia.get(
+        route("admin.santri.index"),
+        {
+            search: search.value,
+            perPage: perPage.value,
+            daerah: fltDaerah.value,
+            madin: fltMadin.value,
+            formal: fltFormal.value,
+            tahun: fltTahun.value,
+        },
+        {
+            preserveState: true,
+            replace: true,
+        }
+    );
+};
+const getFormal = () => {
+    Inertia.get(
+        route("admin.santri.index"),
+        {
+            search: search.value,
+            perPage: perPage.value,
+            daerah: fltDaerah.value,
+            madin: fltMadin.value,
+            formal: fltFormal.value,
+            tahun: fltTahun.value,
+        },
+        {
+            preserveState: true,
+            replace: true,
+        }
+    );
+};
 const getTags = () => {
     Inertia.get(
         route("admin.santri.index"),
         {
             search: search.value,
             perPage: perPage.value,
+            daerah: fltDaerah.value,
+            madin: fltMadin.value,
+            formal: fltFormal.value,
+            tahun: fltTahun.value,
         },
         {
             preserveState: true,
@@ -234,14 +341,18 @@ const getTags = () => {
 let debounce = ref("");
 const debounceSearch = (event) => {
     isTyping.value = true;
-    // clearTimeout(debounce);
+    clearTimeout(debounce);
     debounce = setTimeout(() => {
         isTyping.value = false;
         Inertia.get(
             route("admin.santri.index"),
             {
-                search: event.target.value,
+                search: search.value,
                 perPage: perPage.value,
+                daerah: fltDaerah.value,
+                madin: fltMadin.value,
+                formal: fltFormal.value,
+                tahun: fltTahun.value,
             },
             {
                 preserveState: true,
@@ -254,5 +365,8 @@ const getNumbering = (index) => {
     return (
         props.students.current_page * props.perHal - props.perHal + index + 1
     );
+};
+const handleReset = () => {
+    Inertia.get(route("admin.santri.index"));
 };
 </script>
