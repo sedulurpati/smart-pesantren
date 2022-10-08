@@ -124,6 +124,7 @@ const form = reactive({
     password: "",
 });
 const handleSubmit = () => {
+    s;
     Inertia.post(route("register"), form);
 };
 const remove_on_paste = (event) => {

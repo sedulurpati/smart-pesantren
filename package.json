@@ -28,7 +28,7 @@
         "jquery": "^3.6.1",
         "mdb-vue-ui-kit": "^3.0.0",
         "metismenu": "^3.0.7",
-        "sweetalert2": "^11.4.37",
+        "sweetalert2": "^11.4.38",
         "v-offline": "^2.3.0",
         "vue": "^3.2.36",
         "vue-confirm-dialog": "^1.1.0",
@@ -39,6 +39,7 @@
         "vue-search-select": "^2.9.5",
         "vue-select": "^4.0.0-beta.5",
         "vue-step-wizard": "^0.1.17",
+        "vue-sweetalert2": "^5.0.5",
         "vue3-perfect-scrollbar": "^1.6.0"
     }
 }

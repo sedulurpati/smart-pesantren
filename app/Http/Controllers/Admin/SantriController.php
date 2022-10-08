@@ -78,7 +78,8 @@ class SantriController extends Controller
     {
         $santri->load('dormitory', 'madinEducation', 'formalEducation');
         $showMode = true;
-        return Inertia::render('Santri/Edit', compact('santri', 'showMode'));
+        $family = $santri->family;
+        return Inertia::render('Santri/Edit', compact('santri', 'showMode', 'family'));
     }
     public function edit(Student $santri)
     {
@@ -90,7 +91,6 @@ class SantriController extends Controller
     }
     public function update(Student $santri, UpdateStudentRequest $req)
     {
-        dd($req->all());
         $input = $req->except(['family']);
         $santri->update($input);
         return back()->with('message', 'Data Pribadi Berhasil di edit');
@@ -98,7 +98,24 @@ class SantriController extends Controller
     public function updateOrtu(Request $req, int $id)
     {
         $input = $req->except(['created_at', 'updated_at']);
-        $family =  Family::where('student_id', $id)->update($input);
+        $family = Family::firstOrNew(['student_id' => request('id')]);
+        $family->a_nik = $req->a_nik;
+        $family->a_nama = $req->a_nama;
+        $family->a_pekerjaan = $req->a_pekerjaan;
+        $family->a_pendidikan = $req->a_pendidikan;
+        $family->a_phone = $req->a_phone;
+        $family->a_penghasilan = $req->a_penghasilan;
+        $family->i_nik = $req->i_nik;
+        $family->i_nama = $req->i_nama;
+        $family->i_pekerjaan = $req->i_pekerjaan;
+        $family->i_pendidikan = $req->i_pendidikan;
+        $family->i_phone = $req->i_phone;
+        $family->w_hubungan_wali = $req->w_hubungan_wali;
+        $family->w_nik = $req->w_nik;
+        $family->w_nama = $req->w_nama;
+        $family->w_pekerjaan = $req->w_pekerjaan;
+        $family->w_penghasilan = $req->w_penghasilan;
+        $family->save();
         return back()->with('message', 'Data Orang tua Berhasil di edit');
     }
     public function updatePendidikan(Request $req, int $id)
