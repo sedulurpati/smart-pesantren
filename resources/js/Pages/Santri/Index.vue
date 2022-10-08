@@ -1,7 +1,5 @@
 <template>
     <AppLayout>
-        <Alert />
-        <SweetAlert />
         <!-- <button @click="alertDisplay()"></button> -->
         <div class="card text-capitalize">
             <div class="row p-1 pb-0">
@@ -202,35 +200,13 @@
             </table>
             <Pagination :links="students" />
         </div>
-        <vue-confirm-dialog></vue-confirm-dialog>
     </AppLayout>
 </template>
 <script setup>
 import { defineProps, ref, watch } from "vue";
 import AppLayout from "../../Shared/AppLayout.vue";
-import Alert from "../../Components/Alert.vue";
-import SweetAlert from "../../Components/SweetAlert.vue";
 import { Inertia } from "@inertiajs/inertia";
 import Pagination from "../../Components/SimplePagination.vue";
-
-const handleClick = () => {
-    this.$confirm({
-        message: "Are you sure?",
-        button: {
-            no: "No",
-            yes: "Yes",
-        },
-        /**
-         * Callback Function
-         * @param {Boolean} confirm
-         */
-        callback: (confirm) => {
-            if (confirm) {
-                // ... do something
-            }
-        },
-    });
-};
 
 const props = defineProps({
     showUrl: Object,
@@ -336,7 +312,6 @@ const getTags = () => {
         }
     );
 };
-
 // coba pakai debounce, mohon koreksi jika ada best practice nya
 let debounce = ref("");
 const debounceSearch = (event) => {

@@ -115,6 +115,7 @@ import { SelfBuildingSquareSpinner } from "epic-spinners";
 import "@vuepic/vue-datepicker/dist/main.css";
 import { ref } from "vue";
 import { useForm } from "@inertiajs/inertia-vue3";
+
 const props = defineProps({
     errors: Object,
 });

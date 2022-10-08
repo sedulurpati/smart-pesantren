@@ -3,14 +3,18 @@
         <div class="col">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <BackButton />
+                    <Link
+                        class="btn btn-primary btn-sm mb-3 me-3"
+                        :href="route('admin.santri.index')"
+                        ><i class="bx bx-arrow-back"></i
+                    ></Link>
                     <h6 class="mb-0 text-uppercase" v-if="!showMode">
                         Edit Data
                     </h6>
                     <h6 class="mb-0 text-uppercase" v-else>Detail</h6>
                     <hr />
                 </div>
-                <div>
+                <div v-if="showMode">
                     <Link
                         as="button"
                         :href="route('admin.santri.edit', santri.id)"
@@ -295,7 +299,7 @@
                                             <label for="">tanggal lahir</label
                                             ><input
                                                 :disabled="showMode"
-                                                type="text"
+                                                type="date"
                                                 class="form-control"
                                                 :class="{
                                                     'is-invalid':
@@ -1053,7 +1057,7 @@ import AppLayout from "../../Shared/AppLayout.vue";
 import BackButton from "../../Components/Backbutton.vue";
 import { Inertia } from "@inertiajs/inertia";
 import { useForm } from "@inertiajs/inertia-vue3";
-import Alert from "../../Components/Alert.vue";
+
 let selectedMadin = ref(props.santri.madin_education_id);
 let selectedFormal = ref(props.santri.formal_education_id);
 let selectedDaerah = ref(props.santri.dormitory_id);
@@ -1084,20 +1088,48 @@ const defaultImg = new URL(
     import.meta.url
 );
 const handleSubmitPribadi = () => {
-    form.put(route("admin.santri.update", props.santri));
+    form.put(route("admin.santri.update", props.santri), {
+        preserveScroll: true,
+        onSuccess: () => {
+            Toast.fire({
+                icon: "success",
+                title: "Berhasil, Update data",
+            });
+        },
+    });
 };
 const handleSubmitOrtu = () => {
-    formOrtu.put(route("admin.santri.update-ortu", props.santri.id));
+    Inertia.put(route("admin.santri.update-ortu", props.santri.id), formOrtu, {
+        preserveScroll: true,
+        onSuccess: () => {
+            Toast.fire({
+                icon: "success",
+                title: "Berhasil, Update data",
+            });
+        },
+    });
 };
 
 const handleSubmitPendidikan = () => {
     console.log("A");
-    Inertia.put(route("admin.santri.update-pendidikan", props.santri.id), {
-        madin_education_id: selectedMadin.value,
-        formal_education_id: selectedFormal.value,
-        dormitory_id: selectedDaerah.value,
-        room: form.room,
-    });
+    Inertia.put(
+        route("admin.santri.update-pendidikan", props.santri.id),
+        {
+            madin_education_id: selectedMadin.value,
+            formal_education_id: selectedFormal.value,
+            dormitory_id: selectedDaerah.value,
+            room: form.room,
+        },
+        {
+            preserveScroll: true,
+            onSuccess: () => {
+                Toast.fire({
+                    icon: "success",
+                    title: "Berhasil, Update data",
+                });
+            },
+        }
+    );
 };
 
 const showPreview = (e) => {
@@ -1111,7 +1143,15 @@ const showPreviewWali = (e) => {
     imageWali.value = URL.createObjectURL(files[0]);
 };
 const handleSubmitFoto = () => {
-    Inertia.post(route("admin.santri.update-foto", props.santri.id), formFoto);
+    Inertia.post(route("admin.santri.update-foto", props.santri.id), formFoto, {
+        preserveScroll: true,
+        onSuccess: () => {
+            Toast.fire({
+                icon: "success",
+                title: "Berhasil, Update data",
+            });
+        },
+    });
 };
 const formFoto = reactive({
     santri: "",

@@ -34,9 +34,24 @@ import "vue-search-select/dist/VueSearchSelect.css";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import { Link } from "@inertiajs/inertia-vue3";
-
+import Swal from "sweetalert2";
 import { provide } from "vue";
 import { dataPilihan } from "./coba.js";
+
+import VueSweetalert2 from "vue-sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
+
+window.Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+});
 
 // InertiaProgress.init({
 //     // The delay after which the progress bar will
@@ -62,6 +77,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
             .use(plugin)
+            .use(VueSweetalert2)
             .component("Head", Head)
             .component("v-select", vSelect)
             .provide("message", {
