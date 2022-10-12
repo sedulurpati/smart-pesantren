@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\Student;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {
@@ -13,6 +15,7 @@ class DashboardController extends Controller
     }
     public function admin()
     {
+
         return inertia('Admin/Dashboard');
     }
     public function tamu()

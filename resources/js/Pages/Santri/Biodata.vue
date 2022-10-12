@@ -4,23 +4,22 @@
         <!--breadcrumb-->
         <div class="page-breadcrumb d-md-flex align-items-center mb-3">
             <Link
-                as="button"
-                :href="route('students.edit', $page.props.user.id)"
+                :href="route('admin.santri.edit', student.id)"
                 class="btn btn-primary mx-1"
-                >Edit</Link
-            >
-            <Link
-                as="button"
-                :href="route('students.edit', $page.props.user.id)"
-                class="btn btn-primary mx-1"
-                >Cetak Biodata</Link
-            >
-            <Link
-                as="button"
-                :href="route('students.edit', $page.props.user.id)"
-                class="btn btn-primary mx-1"
-                >Cetak Pernyataan
+                >Edit
             </Link>
+            <a
+                :href="route('admin.santri.biodataPdf', student.id)"
+                target="_blank"
+                class="btn btn-primary mx-1"
+                >Cetak Biodata</a
+            >
+            <a
+                :href="route('admin.santri.mouPdf', student.id)"
+                target="_blank"
+                class="btn btn-primary mx-1"
+                >Cetak Pernyataan</a
+            >
         </div>
         <!--end breadcrumb-->
         <div class="container">

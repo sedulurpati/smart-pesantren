@@ -5,7 +5,6 @@
                 <h4 @click="getProvinsi">Form Pendaftaran Santri Baru</h4>
                 <hr />
             </div>
-            <input type="text" v-model="form.jenis_kelamin" />
             <form @submit.prevent="handleSubmit2">
                 <div class="card p-3">
                     <div class="row my-4">

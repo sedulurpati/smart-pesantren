@@ -9,14 +9,13 @@
     <style type="text/css">
         @font-face {
             font-family: 'bookman';
-            src: url({{ storage_path('fonts/bookman old style.ttf') }}) format("truetype");
+            src: url({{ public_path('/assets/bakid/bookman old style.ttf') }}) format("truetype");
         }
 
         body {
             font-family: "bookman";
             font-size: 14px;
         }
-
     </style>
 </head>
 
@@ -39,12 +38,12 @@
             </td>
 
             <td width="500">
-                : {{ $data->family->a_nama }}<br>
-                : {{ $data->desa }}, {{ $data->kecamatan }}, {{ $data->kota }}<br>
-                : {{ $data->family->a_phone }}<br>
-                : {{ $data->nama }} <br>
-                : {{ $data->tempat_lahir }}, {{ $data->tanggal_lahir }}<br>
-                : {{ $data->desa }}, {{ $data->kecamatan }}, {{ $data->kota }}<br>
+                : {{ $santri->family->a_nama }}<br>
+                : {{ $santri->desa }}, {{ $santri->kecamatan }}, {{ $santri->kota }}<br>
+                : {{ $santri->family->a_phone }}<br>
+                : {{ $santri->nama }} <br>
+                : {{ $santri->tempat_lahir }}, {{ $santri->tanggal_lahir }}<br>
+                : {{ $santri->desa }}, {{ $santri->kecamatan }}, {{ $santri->kota }}<br>
             </td>
         </tr>
     </table>
@@ -115,7 +114,7 @@
                 <br>
                 <br><br><br>
                 <br>
-                {{ $data->family->a_nama }}
+                {{ $santri->family->a_nama }}
             </td>
         </tr>
     </table>

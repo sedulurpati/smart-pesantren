@@ -3,11 +3,7 @@
         <div class="col">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <Link
-                        class="btn btn-primary btn-sm mb-3 me-3"
-                        :href="route('admin.santri.index')"
-                        ><i class="bx bx-arrow-back"></i
-                    ></Link>
+                    <BackButton />
                     <h6 class="mb-0 text-uppercase" v-if="!showMode">
                         Edit Data
                     </h6>

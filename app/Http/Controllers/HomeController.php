@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -13,12 +15,28 @@ class HomeController extends Controller
             $role = Auth::user()->roles->pluck('name')[0] ?? 'tamu';
             switch ($role) {
                 case 'admin':
-                    return inertia('Dashboard/admin');
+                    $role = Role::with('users');
+                    $jml_santri_baru = $role->where('name', 'santri_baru')->first();
+                    $jml_santri_baru = $jml_santri_baru ? $jml_santri_baru->users->count() : 0;
+                    $santri = $role->where('name', 'santri')->first();
+                    $santri = $santri ? $santri->users->count() : 0;
+                    $alumni = $role->where('name', 'alumni')->first();
+                    $alumni = $alumni ? $alumni->users->count() : 0;
+                    $asatidz = $role->where('name', 'asatidz')->first();
+                    $asatidz = $asatidz ? $asatidz->users->count() : 0;
+                    $jumlah = [
+                        'santri_baru' => $jml_santri_baru,
+                        'santri' => $santri,
+                        'alumni' => $alumni,
+                        'asatidz' => $asatidz
+                    ];
+                    return inertia('Dashboard/admin', compact('jumlah'));
                     break;
                 case 'super_admin':
                     return inertia('Dashboard/super_admin');
                     break;
                 case 'tamu':
+                    $this->authorize('create', Student::class);
                     return inertia('Dashboard/form_pendaftaran');
                     break;
                 case 'santri_baru':

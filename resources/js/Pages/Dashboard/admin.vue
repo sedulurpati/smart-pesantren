@@ -1,5 +1,5 @@
 <template>
-    <Head><title>Ok</title></Head>
+    <Head><title>Dashboard</title></Head>
     <AppLayout>
         <div class="row mb-3">
             <h5 class="text-center text-bold text-success">السنتري</h5>
@@ -115,7 +115,9 @@
                         <div class="d-flex align-items-center">
                             <div>
                                 <p class="mb-0 text-white">Pendaftar</p>
-                                <h4 class="my-1 text-white">805</h4>
+                                <h4 class="my-1 text-white">
+                                    {{ jumlah.santri_baru }}
+                                </h4>
                             </div>
                             <div
                                 class="widgets-icons bg-white text-success ms-auto"
@@ -132,7 +134,9 @@
                         <div class="d-flex align-items-center">
                             <div>
                                 <p class="mb-0 text-dark">Santri Aktif</p>
-                                <h4 class="my-1 text-dark">8.4K</h4>
+                                <h4 class="my-1 text-dark">
+                                    {{ jumlah.santri }}
+                                </h4>
                             </div>
                             <div
                                 class="widgets-icons bg-white text-dark ms-auto"
@@ -149,7 +153,9 @@
                         <div class="d-flex align-items-center">
                             <div>
                                 <p class="mb-0 text-white">Alumni</p>
-                                <h4 class="my-1 text-white">59K</h4>
+                                <h4 class="my-1 text-white">
+                                    {{ jumlah.alumni }}
+                                </h4>
                             </div>
                             <div
                                 class="widgets-icons bg-white text-danger ms-auto"
@@ -166,7 +172,9 @@
                         <div class="d-flex align-items-center">
                             <div>
                                 <p class="mb-0 text-dark">Asatidz</p>
-                                <h4 class="my-1 text-dark">34.46%</h4>
+                                <h4 class="my-1 text-dark">
+                                    {{ jumlah.asatidz }}
+                                </h4>
                             </div>
                             <div
                                 class="widgets-icons bg-white text-dark ms-auto"
@@ -182,4 +190,7 @@
 </template>
 <script setup>
 import AppLayout from "../../Shared/AppLayout.vue";
+defineProps({
+    jumlah: Object,
+});
 </script>

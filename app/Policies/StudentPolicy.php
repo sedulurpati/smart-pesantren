@@ -2,8 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\Student;
 use App\Models\User;
+use App\Models\Student;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class StudentPolicy
@@ -16,9 +17,15 @@ class StudentPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
+    public function before($user, $ability)
+    {
+        if ($user->isAdmin() or $user->isSekretaris()) {
+            return true;
+        }
+    }
     public function viewAny(User $user)
     {
-        //
+        return $user->isAdmin() or $user->isSekretaris();
     }
 
     /**
@@ -41,7 +48,7 @@ class StudentPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->isTamu();
     }
 
     /**
@@ -53,7 +60,9 @@ class StudentPolicy
      */
     public function update(User $user, Student $student)
     {
-        //
+        return $user->id === $student->user_id  ?
+            Response::allow()
+            : Response::deny('Maaf! tidak di izinkan');
     }
 
     /**

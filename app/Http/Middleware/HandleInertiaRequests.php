@@ -10,21 +10,10 @@ use Illuminate\Support\Facades\Http;
 
 class HandleInertiaRequests extends Middleware
 {
-    /**
-     * The root template that's loaded on the first page visit.
-     *
-     * @see https://inertiajs.com/server-side-setup#root-template
-     * @var string
-     */
+
     protected $rootView = 'app';
 
-    /**
-     * Determines the current asset version.
-     *
-     * @see https://inertiajs.com/asset-versioning
-     * @param  \Illuminate\Http\Request  $request
-     * @return string|null
-     */
+
     public function version(Request $request): ?string
     {
         return parent::version($request);
@@ -74,7 +63,7 @@ class HandleInertiaRequests extends Middleware
             'tgl_hijriah' => $this->getHijri(),
             'tgl_masehi' => $tgl_masehi->translatedFormat('l, d M Y'),
             'user' => $user,
-            'role' => $role
+            'role' => $role,
         ]);
     }
 }

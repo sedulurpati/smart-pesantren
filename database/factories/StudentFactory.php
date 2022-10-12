@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Dormitory;
+use App\Models\FormalEducation;
+use App\Models\MadinEducation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,7 +22,7 @@ class StudentFactory extends Factory
     {
         return [
             'nama' => $this->faker->name(),
-            'user_id' => User::factory(),
+            'user_id' => User::all()->random()->id,
             'nik' => $this->faker->word(),
             'nis' => rand(222222, 999999),
             'tanggal_lahir' => $this->faker->date(),
@@ -34,9 +37,9 @@ class StudentFactory extends Factory
             'kecamatan' => $this->faker->city(),
             'provinsi' => $this->faker->city(),
             'kode_pos' => $this->faker->name(),
-            'madin_education_id' => rand(1, 9),
-            'formal_education_id' => rand(1, 6),
-            'dormitory_id' => rand(1, 9),
+            'madin_education_id' => MadinEducation::all()->random()->id,
+            'formal_education_id' => FormalEducation::all()->random()->id,
+            'dormitory_id' => Dormitory::all()->random()->id,
             'room' => rand(1, 9),
         ];
     }

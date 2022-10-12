@@ -145,9 +145,10 @@
                         <td>
                             <div class="btn-group">
                                 <Link
+                                    v-if="s.can.edit"
                                     as="button"
                                     class="btn btn-outline-primary btn-sm"
-                                    :href="s.editUrl"
+                                    :href="s.url.edit"
                                 >
                                     Edit
                                 </Link>
@@ -164,7 +165,8 @@
                                 <ul class="dropdown-menu" style="">
                                     <li>
                                         <Link
-                                            :href="s.showUrl"
+                                            v-if="s.can.show"
+                                            :href="s.url.show"
                                             class="dropdown-item"
                                             >Show</Link
                                         >

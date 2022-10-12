@@ -43,6 +43,29 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function isAdmin()
+    {
+        return $this->roles()->where('name', 'admin')->orWhere('name', 'super admin')->exists();
+    }
+    public function isSekretaris()
+    {
+        return $this->roles()->whereName('sekretariat')->exists();
+    }
+    public function isSantriBaru()
+    {
+        return $this->roles()->whereName('santri_baru')->exists();
+    }
+    public function isManager()
+    {
+        if ($this->isAdmin() or $this->isSekretaris()) {
+            return true;
+        }
+        return false;
+    }
+    public function isTamu()
+    {
+        return $this->roles()->where('name', 'tamu')->exists();
+    }
     public function student()
     {
         return $this->hasOne(Student::class);

@@ -68,7 +68,7 @@ window.Toast = Swal.mixin({
 //     showSpinner: true,
 // });
 createInertiaApp({
-    title: (title) => `${title} - SIP.MUBAKID`,
+    title: (title) => `${title} - MUBAKID`,
     resolve: (name) =>
         resolvePageComponent(
             `./Pages/${name}.vue`,

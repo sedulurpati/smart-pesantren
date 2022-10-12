@@ -12,6 +12,12 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-10 col-xl-7 mx-auto">
+                                <SelfBuildingSquareSpinner
+                                    v-if="form.processing"
+                                    :animation-duration="2000"
+                                    :size="20"
+                                    :color="'green'"
+                                />
                                 <h1 class="display-6">Buat Akun</h1>
                                 <p class="text-muted mb-4">
                                     Silahkan membuat akun untuk mendaftar
@@ -65,6 +71,7 @@
 
                                     <div class="d-grid gap-2 mt-2">
                                         <button
+                                            :disabled="form.processing"
                                             type="submit"
                                             class="btn btn-success btn-block text-uppercase mb-2 rounded-pill shadow-sm"
                                         >
@@ -81,6 +88,7 @@
                                                 class="btn btn-outline-success rounded-pill text-uppercase"
                                                 as="button"
                                                 :href="route('login')"
+                                                :disabled="form.processing"
                                             >
                                                 Masuk
                                             </Link>
@@ -113,19 +121,30 @@
     </div>
 </template>
 <script setup>
-import { defineProps, reactive } from "vue";
-import { Head, Link } from "@inertiajs/inertia-vue3";
+import { defineProps, reactive, ref } from "vue";
+import { useForm, Head, Link } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";
+import { SelfBuildingSquareSpinner } from "epic-spinners";
+import "@vuepic/vue-datepicker/dist/main.css";
+
 const props = defineProps({
     errors: Object,
 });
-const form = reactive({
+const form = useForm({
+    name: "",
     email: "",
     password: "",
+    password_confirmation: "",
 });
+let isSending = ref(false);
 const handleSubmit = () => {
-    s;
-    Inertia.post(route("register"), form);
+    let isSending = true;
+    form.post(route("register"), {
+        preserveScroll: true,
+        onSuccess: () => {
+            isSending.value = false;
+        },
+    });
 };
 const remove_on_paste = (event) => {
     let main_text = event.clipboardData.getData("text");

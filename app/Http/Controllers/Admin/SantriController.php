@@ -15,15 +15,24 @@ use function PHPSTORM_META\map;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\UpdateStudentRequest;
 
 class SantriController extends Controller
 {
+    public function __construct()
+    {
+    }
     public function index(Request $req)
     {
+        $this->authorize('viewAny', Student::class);
         $perPage = $req->input('perPage') ?: 5;
         return Inertia::render('Santri/Index', [
+            'can' => [
+                'create' => Auth::user()->can('admin.santri.create'),
+            ],
             'students' => Student::query()
                 ->when($req->input('search'), function ($query, $search) {
                     $query->where('nama', 'like', "%{$search}%");
@@ -52,8 +61,18 @@ class SantriController extends Controller
                         'daerah' => $item->dormitory->name . $item->room,
                         'madin' => $item->madinEducation->name,
                         'formal' => $item->formalEducation->name,
-                        'showUrl' => URL::route('admin.santri.show', $item->id),
-                        'editUrl' => URL::route('admin.santri.edit', $item->id),
+                        'can' => [
+                            // 'delete' => Auth::user()->can('admin.santri.delete'),
+                            'edit' => Auth::user()->can('admin.santri.edit'),
+                            'show' => Auth::user()->can('admin.santri.show'),
+                        ],
+                        'url' => [
+                            // 'deleteUrl' => route('admin.santri.delete'),
+                            'edit' => route('admin.santri.edit', $item->id),
+                            'show' => route('admin.santri.show', $item->id),
+                        ],
+                        // 'showUrl' => URL::route('admin.santri.show', $item->id),
+                        // 'editUrl' => URL::route('admin.santri.edit', $item->id),
                     ];
                 }),
             'filters' => $req->only(
@@ -83,6 +102,7 @@ class SantriController extends Controller
     }
     public function edit(Student $santri)
     {
+        $this->authorize('update', $santri);
         $daerah = Dormitory::where('gender', $santri->jenis_kelamin)->get();
         $madin = MadinEducation::all();
         $formal = FormalEducation::all();
@@ -91,14 +111,17 @@ class SantriController extends Controller
     }
     public function update(Student $santri, UpdateStudentRequest $req)
     {
+        $this->authorize('update', $santri);
         $input = $req->except(['family']);
         $santri->update($input);
         return back()->with('message', 'Data Pribadi Berhasil di edit');
     }
     public function updateOrtu(Request $req, int $id)
     {
+        $student = Student::find($id);
+        $this->authorize('update', $student);
         $input = $req->except(['created_at', 'updated_at']);
-        $family = Family::firstOrNew(['student_id' => request('id')]);
+        $family = Family::firstOrNew(['student_id' => $id]);
         $family->a_nik = $req->a_nik;
         $family->a_nama = $req->a_nama;
         $family->a_pekerjaan = $req->a_pekerjaan;
@@ -120,12 +143,15 @@ class SantriController extends Controller
     }
     public function updatePendidikan(Request $req, int $id)
     {
+        $student = Student::find($id);
+        $this->authorize('update', $student);
         $input = $req->except(['created_at', 'updated_at']);
         Student::find($id)->update($input);
         return back()->with('message', 'Data Pendidikan/Daerah Berhasil di edit');
     }
     public function updateFoto(Student $student, Request $req)
     {
+        $this->authorize('update', $student);
         $pesan  = 'Foto Berhasil Diperbarui';
         if ($req->hasFile('santri')) {
             $req->validate([

@@ -1,4 +1,5 @@
 <template>
+    <Head :title="title ? `${title}` : 'Smart Pesantren'"> </Head>
     <!--wrapper-->
     <div
         class="wrapper"
@@ -194,7 +195,6 @@
         <a href="javaScript:;" class="back-to-top"
             ><i class="bx bxs-up-arrow-alt"></i
         ></a>
-        <!--End Back To Top Button-->
         <CekInternet />
     </div>
     <!--end wrapper-->
@@ -407,13 +407,7 @@ const handleSidebarOut = () => {
 const switcherHandle = () => {
     switcher.value = !switcher.value;
 };
-defineProps({
-    // tgl_hijriah: Object,
-});
 
-onMounted(() => {
-    // console.log(this.tgl_hijriah);
-});
 $(function () {
     "use strict";
     // new PerfectScrollbar(".header-message-list"),

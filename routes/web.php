@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Tamu\TamuController;
 use App\Http\Controllers\Admin\SantriController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ExportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,10 +42,12 @@ Route::group(['middleware' => ['role:santri_baru']], function () {
 });
 
 Route::name('admin.')->group(function () {
-    Route::group(['middleware' => ['role:admin']], function () {
+    Route::group(['middleware' => ['role:admin|santri_baru']], function () {
         Route::post('/update-foto/{student}', [SantriController::class, 'updateFoto'])->name('santri.update-foto');
         Route::put('/update-ortu/{id}', [SantriController::class, 'updateOrtu'])->name('santri.update-ortu');
         Route::put('/update-pendidikan/{id}', [SantriController::class, 'updatePendidikan'])->name('santri.update-pendidikan');
+        Route::get('/santri/{santri}/biodataPdf', [ExportController::class, 'biodataPdf'])->name('santri.biodataPdf');
+        Route::get('/santri/{santri}/mouPdf', [ExportController::class, 'mouPdf'])->name('santri.mouPdf');
         Route::resource('santri', SantriController::class);
     });
 });
